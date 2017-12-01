@@ -9,10 +9,10 @@ data_file.close()
 
 challenge_number = challenge_data.split("\n")[0]
 
-sum = 0
+value = 0
 for index, char_digit in enumerate(challenge_number):
     next_index = (index + 1) % len(challenge_number)
     if char_digit == challenge_number[next_index]:
-        sum += int(challenge_number[next_index])
+        value += int(challenge_number[next_index])
 
-print(sum)
+print(value)
