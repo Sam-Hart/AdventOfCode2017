@@ -8,7 +8,6 @@ with open(data_file_name, 'r') as data_file:
 data_file.close()
 
 challenge_rows = challenge_data.split('\n')
-del challenge_rows[-1]
 
 rows_with_duplicates = 0
 for row in challenge_rows:

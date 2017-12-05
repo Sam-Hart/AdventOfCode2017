@@ -10,13 +10,12 @@ data_file.close()
 challenge_rows = challenge_data.split('\n')
 total = 0
 for row in challenge_rows:
-    if (len(row) > 0):
-        challenge_row = row.split(' ')
-        challenge_row_numbers = list(
-            int(s) for s in list(map(int, challenge_row))
-        )
-        minimum_value = min(challenge_row_numbers)
-        maximum_value = max(challenge_row_numbers)
-        total += maximum_value - minimum_value
+    challenge_row = row.split(' ')
+    challenge_row_numbers = list(
+        int(s) for s in list(map(int, challenge_row))
+    )
+    minimum_value = min(challenge_row_numbers)
+    maximum_value = max(challenge_row_numbers)
+    total += maximum_value - minimum_value
 
 print(total)
