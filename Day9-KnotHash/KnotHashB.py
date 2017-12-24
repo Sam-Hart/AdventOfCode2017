@@ -7,6 +7,8 @@ def calculate_sparse_hash(ascii_codes):
     number_ring = [i for i in range(0, 256)]
     ring_position = 0
     skip_size = 0
+    # Generate sparse hash by performing twisting operation using the input
+    # codes 64 times, carrying over ring_position and skip_size each time
     for _ in range(0, 64):
         for ascii_code in ascii_codes:
             reverse_integers = \
@@ -15,10 +17,14 @@ def calculate_sparse_hash(ascii_codes):
                 [j % len(number_ring) for j in reverse_integers]
             ring_position = (ring_position + ascii_code + skip_size) \
                 % (len(number_ring))
-
-            for reverse_element_index in range(0, len(elements_to_reverse) // 2):
+            elements_reverse_midpoint = range(
+                0, len(elements_to_reverse) // 2
+            )
+            for reverse_element_index in elements_reverse_midpoint:
                 former_index = elements_to_reverse[reverse_element_index]
-                latter_index = elements_to_reverse[-(reverse_element_index + 1)]
+                latter_index = elements_to_reverse[
+                    -(reverse_element_index + 1)
+                ]
                 former_number = number_ring[former_index]
                 latter_number = number_ring[latter_index]
                 number_ring[former_index] = latter_number
