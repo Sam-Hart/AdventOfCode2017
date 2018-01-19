@@ -12,18 +12,13 @@ class Firewall():
     def calculate_delay(self):
         caught = True
         undetected_delay = 0
-        calculation_layers = self.firewall_layers
         while caught:
-            incremented_firewall_layers = {}
-            for layer_index, layer in calculation_layers.items():
-                if layer_index % layer.get_scanner_cycle() == 0:
-                    for layer_index, layer in calculation_layers.items():
-                        incremented_firewall_layers[layer_index + 1] = layer
+            for layer_index, layer in self.firewall_layers.items():
+                if (layer_index + undetected_delay) % layer.get_scanner_cycle() == 0:
                     undetected_delay += 1
                     caught = True
                     break
                 caught = False
-            calculation_layers = incremented_firewall_layers
         return undetected_delay
 
 
@@ -36,7 +31,7 @@ class Firewall_Layer():
 
 
 challenge_data = None
-data_file_name = os.path.join(os.path.dirname(sys.argv[0]), 'testInput.txt')
+data_file_name = os.path.join(os.path.dirname(sys.argv[0]), 'input.txt')
 with open(data_file_name, 'r') as data_file:
     challenge_data = data_file.read()
 data_file.close()
