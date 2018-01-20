@@ -13,12 +13,12 @@ class Firewall():
         caught = True
         undetected_delay = 0
         while caught:
+            caught = False
             for layer_index, layer in self.firewall_layers.items():
                 if (layer_index + undetected_delay) % layer.get_scanner_cycle() == 0:
                     undetected_delay += 1
                     caught = True
                     break
-                caught = False
         return undetected_delay
 
 
@@ -27,7 +27,7 @@ class Firewall_Layer():
         self.depth = depth
 
     def get_scanner_cycle(self):
-        return (2 * self.depth) - 2
+        return 2 * self.depth - 2
 
 
 challenge_data = None
