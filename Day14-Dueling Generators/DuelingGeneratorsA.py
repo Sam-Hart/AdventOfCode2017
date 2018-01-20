@@ -1,7 +1,7 @@
 import os
 import sys
 
-COMPARE_PAIRS = 5
+COMPARE_PAIRS = 40000000
 GENERATOR_A_FACTOR = 16807
 GENERATOR_B_FACTOR = 48271
 challenge_data = None
@@ -18,9 +18,8 @@ class DuelingGenerator():
         self.divisor = 2147483647
         self.factor = factor
 
-    def calculate(self, ):
-        self.calculated_value = (self.calculated_value * self.factor) \
-            % self.divisor
+    def calculate(self, old_value):
+        return (old_value * self.factor) % self.divisor
 
 
 class Judge():
@@ -31,18 +30,32 @@ class Judge():
         self.generator_b = gen_b
 
     def consider_pairs(self):
-        generator_a_seed = challenge_data[0].split('with ')[1]
-        generator_b_seed = challenge_data[1].split('with ')[1]
+        gen_a_result = int(challenge_data[0].split('with ')[1])
+        gen_b_result = int(challenge_data[1].split('with ')[1])
         for _ in range(0, self.number_of_pairs):
-            self.generator_a.calculate()
-            self.generator_b.calculate()
-            
+            gen_a_result = self.generator_a.calculate(gen_a_result)
+            gen_b_result = self.generator_b.calculate(gen_b_result)
+            bit_len: int
+            if gen_a_result.bit_length() > gen_b_result.bit_length():
+                bit_len = gen_a_result.bit_length()
+            else:
+                bit_len = gen_b_result.bit_length()
+
+            gen_a_bytes = gen_a_result.to_bytes(
+                (bit_len // 8) + 1,
+                'little'
+            )
+            gen_b_bytes = gen_b_result.to_bytes(
+                (gen_b_result.bit_length() // 8) + 1,
+                'little'
+            )
+            if gen_a_bytes[:2] == gen_b_bytes[:2]:
+                self.pairs_matching_in_lower_sixteen_bits += 1
 
 
-
-
-
-generator_a = DuelingGenerator(int(generator_a_seed), GENERATOR_A_FACTOR)
-generator_b = DuelingGenerator(int(generator_b_seed), GENERATOR_B_FACTOR)
+generator_a = DuelingGenerator(GENERATOR_A_FACTOR)
+generator_b = DuelingGenerator(GENERATOR_B_FACTOR)
 
 judge = Judge(COMPARE_PAIRS, generator_a, generator_b)
+judge.consider_pairs()
+print(judge.pairs_matching_in_lower_sixteen_bits)
