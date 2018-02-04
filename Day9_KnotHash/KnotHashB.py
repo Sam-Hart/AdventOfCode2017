@@ -50,22 +50,23 @@ def calculate_hash(clear_text):
     text_codes = [ord(char) for char in clear_text]
     sparse_hash = calculate_sparse_hash(text_codes)
     dense_hash = calculate_dense_hash(sparse_hash)
-    hash_string = ""
+    hash_string = ''
     for decimal_value in dense_hash:
         hash_string += '{0:02x}'.format(decimal_value)
     return hash_string
 
 
-challenge_data = None
-data_file_name = os.path.join(os.path.dirname(sys.argv[0]), 'input.txt')
-with open(data_file_name, 'r') as data_file:
-    challenge_data = data_file.read()
-data_file.close()
+if __name__ == '__main__':
+    challenge_data = None
+    data_file_name = os.path.join(os.path.dirname(sys.argv[0]), 'input.txt')
+    with open(data_file_name, 'r') as data_file:
+        challenge_data = data_file.read()
+    data_file.close()
 
-clear_text_inputs = [
-    clear_text_input for clear_text_input in challenge_data.split('\n')
-]
+    clear_text_inputs = [
+        clear_text_input for clear_text_input in challenge_data.split('\n')
+    ]
 
-for clear_text_input in clear_text_inputs:
-    hash_output = calculate_hash(clear_text_input)
-    print(hash_output)
+    for clear_text_input in clear_text_inputs:
+        hash_output = calculate_hash(clear_text_input)
+        print(hash_output)

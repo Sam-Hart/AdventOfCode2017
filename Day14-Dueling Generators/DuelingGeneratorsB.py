@@ -1,7 +1,7 @@
 import os
 import sys
 
-COMPARE_PAIRS = 40000000
+COMPARE_PAIRS = 5000000
 GENERATOR_A_FACTOR = 16807
 GENERATOR_B_FACTOR = 48271
 challenge_data = None
@@ -14,12 +14,16 @@ challenge_data = challenge_data.split('\n')
 
 
 class DuelingGenerator():
-    def __init__(self, factor):
+    def __init__(self, factor, worthy_multiple=1):
+        self.worthy_multiple = worthy_multiple
         self.divisor = 2147483647
         self.factor = factor
 
     def calculate(self, old_value):
-        return (old_value * self.factor) % self.divisor
+        new_calculation = (old_value * self.factor) % self.divisor
+        if new_calculation % self.worthy_multiple != 0:
+            new_calculation = self.calculate(new_calculation)
+        return new_calculation
 
 
 class Judge():
@@ -53,8 +57,8 @@ class Judge():
                 self.pairs_matching_in_lower_sixteen_bits += 1
 
 
-generator_a = DuelingGenerator(GENERATOR_A_FACTOR)
-generator_b = DuelingGenerator(GENERATOR_B_FACTOR)
+generator_a = DuelingGenerator(GENERATOR_A_FACTOR, 4)
+generator_b = DuelingGenerator(GENERATOR_B_FACTOR, 8)
 
 judge = Judge(COMPARE_PAIRS, generator_a, generator_b)
 judge.consider_pairs()
