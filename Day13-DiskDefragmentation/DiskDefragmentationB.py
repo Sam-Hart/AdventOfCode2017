@@ -33,7 +33,10 @@ class Graph:
         for x in range(min_j, max_j + 1):
             for y in range(min_i, max_i + 1):
                 diagonal = abs(x - j) == abs(y - i)
-                if not diagonal and self.bmp[y][x] is 1 and not visited[y][x]:
+                if (not diagonal and
+                        len(self.bmp[y]) > x and
+                        self.bmp[y][x] is 1 and
+                        not visited[y][x]):
                     safe_coordinates.append([x, y])
         return safe_coordinates
 
