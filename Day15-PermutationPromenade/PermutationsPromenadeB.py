@@ -43,6 +43,13 @@ data_file.close()
 
 dance_instructions = challenge_data.split(',')
 
-for instruction in dance_instructions:
-    commands[instruction[0]](instruction[1:])
+seen = []
+for i in range(1000000000):
+    s = ''.join(characters)
+    if s in seen:
+        print(seen[1000000000 % i])
+        break
+    seen.append(s)
+    for instruction in dance_instructions:
+        commands[instruction[0]](instruction[1:])
 print(''.join(characters))
